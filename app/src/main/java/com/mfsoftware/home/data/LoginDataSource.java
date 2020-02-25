@@ -26,7 +26,7 @@ public class LoginDataSource {
                 public void onResponse(@NonNull Call<SignInResponse> call, @NonNull Response<SignInResponse> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        return new Result.Success<>(new LoggedInUser(response.body().getUserName(), response.body().getFirstName(), response.body().getToken()));
+                        return new Result.Success<>(new LoggedInUser(response.body().userName, response.body().firstName, response.body().token));
                     }
                 }
 

@@ -8,6 +8,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mfsoftware.home.api.Api;
 import com.mfsoftware.home.api.GetDevicesResponse;
 import com.mfsoftware.home.models.Device;
+import com.mfsoftware.home.models.Room;
 import com.mfsoftware.home.ui.login.LoggedInUserView;
 import com.squareup.picasso.Picasso;
 
@@ -54,12 +55,12 @@ public class MainActivity extends AppCompatActivity
 
         realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
 
-        if (Api.isAvailable(this)) fetchDevicesList(); // Если интернет соединение работает
-        else setDevicesList(realm.where(Device.class).findAll());
-
         // Инициализируем фрагменты для более быстрого доступа в будущем
         notificationsFragment = NotificationsFragment.newInstance();
-        dashboardFragment = DashboardFragment.newInstance(user);
+
+        if (!Api.isAvailable(this))
+            dashboardFragment = DashboardFragment.newInstance(user, realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll()));
+        else dashboardFragment = DashboardFragment.newInstance(user);
 
         // Доверяем их под руководство менеджера
         fragmentManager = getSupportFragmentManager();
