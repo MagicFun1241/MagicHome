@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Мой Дом</string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="devices_found">Не найдено ни одного девайса</string>
+    <string name="sync_header">Синхроницация</string>
+    <string name="sync_devices_title">Синхронизация девайсов</string>
+    <string name="dashboard">Управление</string>
+    <string name="notifications">Уведомления</string>
+    <string name="menu">Меню</string>
+    <string name="action_sign_in_short">Вход</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="title_activity_login">Авторизация</string>
+    <string name="invalid_password">Длина пароля должна быть больше чем 8 символов</string>
+    <string name="invalid_username">Неверное имя пользователя</string>
+    <string name="login_failed">Ошибка входа</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="welcome">Добро пожаловать домой,</string>
+    <string name="prompt_email">Почта или ник</string>
+    <string name="category_tv">ТВ</string>
+    <string name="category_locks">Замки</string>
+    <string name="biometric_confirmation">Биометрическое подтверждение</string>
+    <string name="cancel">Отменить</string>
+    <string name="сonfirm_identity">Подтвердите свою личность</string>
+    <string name="category_music">Аудио</string>
+    <string name="identification_signin">Войти в аккаунт</string>
+    <string name="identification_signup">Создать новый аккаунт</string>
+</resources>
