@@ -1,15 +1,19 @@
 package com.mfsoftware.home.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
+import com.mfsoftware.home.api.SignInResponse;
 import com.mfsoftware.home.data.LoginRepository;
-import com.mfsoftware.home.data.Result;
-import com.mfsoftware.home.data.model.LoggedInUser;
 import com.mfsoftware.home.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginViewModel extends ViewModel {
 
@@ -31,12 +35,21 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // Может быть запущенно паралельно
-        Result<LoggedInUser> result = loginRepository.login(username, password);
+        loginRepository.login(username, password, new Callback<SignInResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<SignInResponse> call, @NonNull Response<SignInResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
 
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getUserName(), data.getFirstName(), data.getToken())));
-        } else loginResult.setValue(new LoginResult(R.string.login_failed));
+                    loginResult.setValue(new LoginResult(new LoggedInUserView(response.body().userName, response.body().firstName, response.body().token)));
+                } else loginResult.setValue(new LoginResult(R.string.login_failed));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SignInResponse> call, @NonNull Throwable t) {
+                loginResult.setValue(new LoginResult(R.string.login_failed));
+            }
+        });
     }
 
     void loginDataChanged(String username, String password) {

@@ -3,12 +3,12 @@ package com.mfsoftware.home.models
 import io.realm.RealmObject
 import io.realm.annotations.Required
 
-class Device : RealmObject() {
+open class Device : RealmObject() {
     @Required
-    val local_ip: String? = null
+    var local_ip: String? = null
 
     @Required
-    val type: Number? = 0
+    var type: Int? = null
 
-    val room: Room? = null
+    var room: Room? = null
 }

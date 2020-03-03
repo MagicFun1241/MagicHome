@@ -1,6 +1,15 @@
 package com.mfsoftware.home.data;
 
+import androidx.annotation.NonNull;
+
+import com.mfsoftware.home.api.Api;
+import com.mfsoftware.home.api.SignInResponse;
 import com.mfsoftware.home.data.model.LoggedInUser;
+import com.mfsoftware.home.security.Hash;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -9,20 +18,10 @@ import com.mfsoftware.home.data.model.LoggedInUser;
 public class LoginRepository {
 
     private static volatile LoginRepository instance;
-
-    private LoginDataSource dataSource;
-
-    // If user credentials will be cached in local storage, it is recommended it be encrypted
-    // @see https://developer.android.com/training/articles/keystore
     private LoggedInUser user = null;
 
-    // private constructor : singleton access
-    private LoginRepository(LoginDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public static LoginRepository getInstance(LoginDataSource dataSource) {
-        if (instance == null) instance = new LoginRepository(dataSource);
+    public static LoginRepository getInstance() {
+        if (instance == null) instance = new LoginRepository();
         return instance;
     }
 
@@ -32,19 +31,17 @@ public class LoginRepository {
 
     public void logout() {
         user = null;
-        dataSource.logout();
     }
 
+    // TODO: Начать использовать эту функцию
     private void setLoggedInUser(LoggedInUser user) {
         this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
+
+
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
-        // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        return result;
+    public void login(String username, String password, Callback<SignInResponse> callback) {
+        Call<SignInResponse> call = Api.json.signIn(username, Hash.create(password));
+        call.enqueue(callback);
     }
 }
