@@ -1,5 +1,6 @@
 package com.mfsoftware.home;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -7,6 +8,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mfsoftware.home.api.Api;
 import com.mfsoftware.home.api.GetDevicesResponse;
+import com.mfsoftware.home.data.model.LoggedInUser;
 import com.mfsoftware.home.models.Device;
 import com.mfsoftware.home.models.Room;
 import com.mfsoftware.home.ui.login.LoggedInUserView;
@@ -50,8 +52,9 @@ public class MainActivity extends AppCompatActivity
         BottomAppBar bottomNavigation = findViewById(R.id.bottom_bar);
         setSupportActionBar(bottomNavigation);
 
-        LoggedInUserView user = getIntent().getParcelableExtra("user");
-        assert user != null;
+        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+
+        LoggedInUser user = new LoggedInUser(preferences.getString("username", ""), preferences.getString("firstname", ""));
 
         realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
 

@@ -7,16 +7,10 @@ public class LoggedInUser {
 
     private String userName;
     private String firstName;
-    private String token;
 
-    public LoggedInUser(String userName, String firstName, String token) {
+    public LoggedInUser(String userName, String firstName) {
         this.userName = userName;
         this.firstName = firstName;
-        this.token = token;
-    }
-
-    public String getToken() {
-        return token;
     }
 
     public String getUserName() {

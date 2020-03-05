@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -13,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Api {
     public static String token;
     public static JsonApi json;
-    private static final String BASE_URL = "http://home.mfsoftware.site/api/";
+    private static final String BASE_URL = "https://5f90ecca.ngrok.io/api/";
 
     public static void create() {
         Retrofit retrofit = new Retrofit.Builder()

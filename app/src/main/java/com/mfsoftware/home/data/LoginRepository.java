@@ -1,15 +1,17 @@
 package com.mfsoftware.home.data;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.mfsoftware.home.api.Api;
+import com.mfsoftware.home.api.SignInRequest;
 import com.mfsoftware.home.api.SignInResponse;
 import com.mfsoftware.home.data.model.LoggedInUser;
 import com.mfsoftware.home.security.Hash;
+import com.mfsoftware.home.ui.login.LoggedInUserView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -18,7 +20,7 @@ import retrofit2.Response;
 public class LoginRepository {
 
     private static volatile LoginRepository instance;
-    private LoggedInUser user = null;
+    private LoggedInUserView user = null;
 
     public static LoginRepository getInstance() {
         if (instance == null) instance = new LoginRepository();
@@ -33,15 +35,20 @@ public class LoginRepository {
         user = null;
     }
 
-    // TODO: Начать использовать эту функцию
-    private void setLoggedInUser(LoggedInUser user) {
+    public void setLoggedInUser(Context context, LoggedInUserView user) {
         this.user = user;
 
+        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
 
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", user.getUserName());
+        editor.putString("firstname", user.getFirstName());
+        editor.putString("token", user.getToken());
+        editor.apply();
     }
 
     public void login(String username, String password, Callback<SignInResponse> callback) {
-        Call<SignInResponse> call = Api.json.signIn(username, Hash.create(password));
+        Call<SignInResponse> call = Api.json.signIn(new SignInRequest(username, Hash.create(password)));
         call.enqueue(callback);
     }
 }

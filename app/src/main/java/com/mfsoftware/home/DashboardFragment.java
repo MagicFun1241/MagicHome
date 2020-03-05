@@ -13,12 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mfsoftware.home.data.model.LoggedInUser;
 import com.mfsoftware.home.models.Device;
 import com.mfsoftware.home.models.Room;
 import com.mfsoftware.home.ui.login.LoggedInUserView;
 
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -32,7 +32,7 @@ import java.util.Objects;
 public class DashboardFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private LoggedInUserView mUser;
+    private LoggedInUser mUser;
 
     private List<Device> mDevicesList;
     private List<Room> mRoomsList;
@@ -48,7 +48,7 @@ public class DashboardFragment extends Fragment {
      * @return A new instance of fragment DashboardFragment.
      */
 
-    static DashboardFragment newInstance(LoggedInUserView user, List<Device> devices, List<Room> rooms) {
+    static DashboardFragment newInstance(LoggedInUser user, List<Device> devices, List<Room> rooms) {
         DashboardFragment fragment = new DashboardFragment();
         fragment.mUser = user;
         fragment.mDevicesList = devices;
@@ -56,7 +56,7 @@ public class DashboardFragment extends Fragment {
         return fragment;
     }
 
-    static DashboardFragment newInstance(LoggedInUserView user) {
+    static DashboardFragment newInstance(LoggedInUser user) {
         DashboardFragment fragment = new DashboardFragment();
         fragment.mUser = user;
         // TODO: Получать результаты с сервера

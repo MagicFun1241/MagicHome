@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".ui.registration.RegistrationActivity" />
         <activity android:name=".IdentificationActivity" />
         <activity
             android:name=".PreloaderActivity"

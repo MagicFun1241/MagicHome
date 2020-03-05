@@ -6,12 +6,12 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface JsonApi {
-    @POST("/api/user/signin")
-    Call<SignInResponse> signIn(@Body String username, @Body String password);
+    @POST("user/signin")
+    Call<SignInResponse> signIn(@Body SignInRequest obj);
 
-    @POST("/api/user/register")
-    Call<SignInResponse> registerUser(@Body SignInResponse obj);
+    @POST("user/register")
+    Call<SignInResponse> registerUser(@Body SignUpRequest obj);
 
-    @GET("/api/devices")
+    @GET("devices")
     Call<GetDevicesResponse> getDevices();
 }

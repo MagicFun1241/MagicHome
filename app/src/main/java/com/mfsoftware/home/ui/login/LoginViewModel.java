@@ -5,11 +5,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import android.content.Context;
 import android.util.Patterns;
 
 import com.mfsoftware.home.api.SignInResponse;
 import com.mfsoftware.home.data.LoginRepository;
 import com.mfsoftware.home.R;
+import com.mfsoftware.home.data.model.LoggedInUser;
+import com.mfsoftware.home.security.Validator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,15 +36,21 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        // Может быть запущенно паралельно
+    public void login(final Context context, String username, String password) {
         loginRepository.login(username, password, new Callback<SignInResponse>() {
             @Override
             public void onResponse(@NonNull Call<SignInResponse> call, @NonNull Response<SignInResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
 
-                    loginResult.setValue(new LoginResult(new LoggedInUserView(response.body().userName, response.body().firstName, response.body().token)));
+                    String userName = response.body().userName;
+                    String firstName = response.body().firstName;
+
+                    LoggedInUserView loggedInUserView = new LoggedInUserView(userName, firstName, response.body().token);
+
+                    loginRepository.setLoggedInUser(context, loggedInUserView);
+
+                    loginResult.setValue(new LoginResult(loggedInUserView));
                 } else loginResult.setValue(new LoginResult(R.string.login_failed));
             }
 
@@ -53,22 +62,17 @@ public class LoginViewModel extends ViewModel {
     }
 
     void loginDataChanged(String username, String password) {
-        if (!isUserNameValid(username))
+        if (!isLoginValid(username))
             loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
-        else if (!isPasswordValid(password))
+        else if (!Validator.isPassword(password))
             loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
         else loginFormState.setValue(new LoginFormState(true));
     }
 
-    // Проверка правильности имени пользователя
-    private boolean isUserNameValid(String username) {
+    // Проверка правильности логина
+    private boolean isLoginValid(String username) {
         if (username == null) return false;
 
-        return (username.contains("@")) ? Patterns.EMAIL_ADDRESS.matcher(username).matches() : !username.trim().isEmpty();
-    }
-
-    // Проверка правильности пароля
-    private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 8;
+        return (username.contains("@")) ? Validator.isEmail(username) : !username.trim().isEmpty();
     }
 }

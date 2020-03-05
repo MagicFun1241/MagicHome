@@ -3,8 +3,6 @@ package com.mfsoftware.home.ui.login;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
-
 /**
  * Class exposing authenticated user details
  */
@@ -12,8 +10,6 @@ public class LoggedInUserView implements Parcelable {
     private String userName;
     private String firstName;
     private String token;
-
-    private boolean guest = false;
 
     LoggedInUserView(String userName, String firstName, String token) {
         this.userName = userName;
@@ -44,7 +40,7 @@ public class LoggedInUserView implements Parcelable {
         }
     };
 
-    String getUserName() {
+    public String getUserName() {
         return userName;
     }
 

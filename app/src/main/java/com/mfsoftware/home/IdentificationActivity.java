@@ -8,9 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.mfsoftware.home.data.model.LoggedInUser;
-import com.mfsoftware.home.ui.login.LoggedInUserView;
 import com.mfsoftware.home.ui.login.LoginActivity;
+import com.mfsoftware.home.ui.registration.RegistrationActivity;
 
 public class IdentificationActivity extends AppCompatActivity {
 
@@ -47,7 +46,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 case 2: // Если пользователь авторизовался
                 case 3: // Если успешно зарегистрировался
                     Intent result = new Intent();
-                    result.putExtra("user", data.getParcelableExtra("user"));
+                    result.putExtra("token", data.getStringExtra("token"));
 
                     setResult(RESULT_OK, result);
                     finish();

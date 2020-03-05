@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.mfsoftware.home.api.Api;
-import com.mfsoftware.home.ui.login.LoggedInUserView;
 
 import java.util.concurrent.Executor;
 
@@ -25,9 +24,9 @@ public class PreloaderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preloader);
 
-        preferences = getPreferences(MODE_PRIVATE);
+        preferences = getSharedPreferences("user", MODE_PRIVATE);
 
-        boolean biometricPromptEnabled = preferences.getBoolean("biometricPromptEnabled", false);
+        boolean biometricPromptEnabled = getSharedPreferences("com.mfsoftware.home_preferences", MODE_PRIVATE).getBoolean("biometric_prompt", false);
 
         if (biometricPromptEnabled) {
             Executor executor = ContextCompat.getMainExecutor(this);
@@ -47,11 +46,7 @@ public class PreloaderActivity extends AppCompatActivity {
                     Api.create(); // Инициализируем API
                     Api.token = preferences.getString("token", ""); // Передаем токен
 
-                    Intent intent = new Intent(PreloaderActivity.this, MainActivity.class);
-                    intent.putExtra("user", new LoggedInUserView(preferences.getString("userName", ""), preferences.getString("firstName", "")));
-
-                    // Показываем главную activity
-                    startActivity(intent);
+                    startActivity(new Intent(PreloaderActivity.this, MainActivity.class));
 
                     finish();
                 }
@@ -83,10 +78,7 @@ public class PreloaderActivity extends AppCompatActivity {
             else {
                 Api.token = token; // Передаем токен
 
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("user", new LoggedInUserView(preferences.getString("userName", ""), preferences.getString("firstName", "")));
-
-                startActivity(intent);
+                startActivity(new Intent(this, MainActivity.class));
                 finish();
             }
         }
@@ -102,20 +94,17 @@ public class PreloaderActivity extends AppCompatActivity {
         switch (requestCode) {
             case 1:
             case 2:
-                LoggedInUserView user = data.getParcelableExtra("user");
-                assert user != null;
+                String token = data.getStringExtra("token");
 
                 // Сохраняем JWT токен в приватном хранилище
                 SharedPreferences.Editor ed = preferences.edit();
-                ed.putString("token", user.getToken());
+                ed.putString("token", token);
                 ed.apply();
 
                 Api.create(); // Инициализируем API
-                Api.token = user.getToken(); // И помещаем туда токен
+                Api.token = token; // И помещаем туда токен
 
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
+                startActivity(new Intent(this, MainActivity.class));
 
                 finish();
                 break;
