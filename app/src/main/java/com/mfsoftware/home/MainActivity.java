@@ -1,114 +1,108 @@
 package com.mfsoftware.home;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mfsoftware.home.api.Api;
-import com.mfsoftware.home.api.GetDevicesResponse;
 import com.mfsoftware.home.data.model.LoggedInUser;
 import com.mfsoftware.home.models.Device;
 import com.mfsoftware.home.models.Room;
-import com.mfsoftware.home.ui.login.LoggedInUserView;
-import com.squareup.picasso.Picasso;
+import com.mfsoftware.home.views.OnSwipeTouchListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
-import java.util.List;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NotificationsFragment.OnFragmentInteractionListener,
-        DashboardFragment.OnFragmentInteractionListener,
-        AddDeviceFragment.OnFragmentInteractionListener {
+        HomeFragment.OnFragmentInteractionListener {
 
-    FragmentManager fragmentManager; // Для управления фрагментами в BottomAppBar
-    Realm realm;
+    private FragmentManager fragmentManager; // Для управления фрагментами в BottomAppBar
+
+    BottomNavigationView bottomNavigation;
 
     // А вот и сами фрагменты
-    Fragment notificationsFragment;
-    Fragment dashboardFragment;
+    private Fragment notificationsFragment;
+    private Fragment homeFragment;
+    private Fragment menuFragment;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomAppBar bottomNavigation = findViewById(R.id.bottom_bar);
-        setSupportActionBar(bottomNavigation);
+        // FIXME: Вообще не работает
+        LinearLayout root = findViewById(R.id.content_main);
+        root.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+
+                Toast.makeText(getApplicationContext(), "Left", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+
+                Toast.makeText(getApplicationContext(), "Right", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        bottomNavigation = findViewById(R.id.bottom_navigation);
 
         SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
 
         LoggedInUser user = new LoggedInUser(preferences.getString("username", ""), preferences.getString("firstname", ""));
 
-        realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
+        Realm realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
 
         // Инициализируем фрагменты для более быстрого доступа в будущем
         notificationsFragment = NotificationsFragment.newInstance();
+        menuFragment = MenuFragment.newInstance("", "");
 
         if (!Api.isAvailable(this))
-            dashboardFragment = DashboardFragment.newInstance(user, realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll()));
-        else dashboardFragment = DashboardFragment.newInstance(user);
+            homeFragment = HomeFragment.newInstance(user, realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll()));
+        else homeFragment = HomeFragment.newInstance(user);
 
         // Доверяем их под руководство менеджера
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.content_main, dashboardFragment)
+                .add(R.id.content_main, homeFragment)
                 .add(R.id.content_main, notificationsFragment)
+                .add(R.id.content_main, menuFragment)
                 .commit();
 
-        bottomNavigation.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_home:
+                        fragmentManager.beginTransaction().replace(R.id.content_main, homeFragment).commit();
+                        return true;
                     case R.id.navigation_notifications:
                         fragmentManager.beginTransaction().replace(R.id.content_main, notificationsFragment).commit();
-                        break;
-                    case R.id.navigation_dashboard:
-                        fragmentManager.beginTransaction().replace(R.id.content_main, dashboardFragment).commit();
-                        break;
+                        return true;
+                    case R.id.navigation_menu:
+                        fragmentManager.beginTransaction().replace(R.id.content_main, menuFragment).commit();
+                        return true;
                 }
                 return false;
             }
         });
-
-        bottomNavigation.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new BottomNavigationDrawerFragment().show(fragmentManager, "d");
-            }
-        });
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddDeviceFragment.newInstance().show(fragmentManager, "addDevice");
-            }
-        });
-
-        // Picasso.get().placeholder().load(R.drawable.ic_person).into((ImageView) findViewById(R.id.profile));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bottom_navigation, menu);
-        return true;
     }
 
     @Override

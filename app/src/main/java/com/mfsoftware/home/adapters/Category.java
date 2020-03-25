@@ -1,6 +1,6 @@
 package com.mfsoftware.home.adapters;
 
-public class Category {
+class Category {
     private String title;
     private int preview;
 

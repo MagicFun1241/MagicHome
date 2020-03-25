@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import com.mfsoftware.home.api.Api;
 import com.mfsoftware.home.api.SignInRequest;
 import com.mfsoftware.home.api.SignInResponse;
-import com.mfsoftware.home.data.model.LoggedInUser;
 import com.mfsoftware.home.security.Hash;
 import com.mfsoftware.home.ui.login.LoggedInUserView;
 
@@ -48,7 +47,7 @@ public class LoginRepository {
     }
 
     public void login(String username, String password, Callback<SignInResponse> callback) {
-        Call<SignInResponse> call = Api.json.signIn(new SignInRequest(username, Hash.create(password)));
+        Call<SignInResponse> call = Api.json.signIn(new SignInRequest(username, Hash.create(password), Api.getFingerPrint()));
         call.enqueue(callback);
     }
 }

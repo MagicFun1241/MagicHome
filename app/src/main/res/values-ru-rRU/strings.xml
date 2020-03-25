@@ -28,4 +28,5 @@
     <string name="identification_signup">Создать новый аккаунт</string>
     <string name="security_header">Безопастность</string>
     <string name="biometric_prompt_title">Проверка биометрии</string>
+    <string name="action_profile">Профиль</string>
 </resources>

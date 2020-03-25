@@ -2,7 +2,6 @@ package com.mfsoftware.home.views;
 
 import android.content.Context;
 import android.view.Gravity;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -11,7 +10,7 @@ import com.mfsoftware.home.R;
 import com.squareup.picasso.Picasso;
 
 public class UserAppBar extends LinearLayout {
-    ImageView avatar;
+    private ProfileImageView avatar;
 
     public UserAppBar(Context context) {
         super(context);
@@ -27,7 +26,7 @@ public class UserAppBar extends LinearLayout {
         LayoutParams layoutParams = new LayoutParams((int)(36 * factor), (int)(36 * factor));
         layoutParams.gravity = Gravity.END;
 
-        avatar = new ImageView(getContext());
+        avatar = new ProfileImageView(getContext());
         avatar.setLayoutParams(layoutParams);
         avatar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
 

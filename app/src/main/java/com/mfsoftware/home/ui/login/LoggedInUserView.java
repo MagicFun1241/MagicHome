@@ -11,7 +11,7 @@ public class LoggedInUserView implements Parcelable {
     private String firstName;
     private String token;
 
-    LoggedInUserView(String userName, String firstName, String token) {
+    public LoggedInUserView(String userName, String firstName, String token) {
         this.userName = userName;
         this.firstName = firstName;
         this.token = token;
@@ -22,7 +22,7 @@ public class LoggedInUserView implements Parcelable {
         this.firstName = firstName;
     }
 
-    protected LoggedInUserView(Parcel in) {
+    private LoggedInUserView(Parcel in) {
         userName = in.readString();
         firstName = in.readString();
         token = in.readString();

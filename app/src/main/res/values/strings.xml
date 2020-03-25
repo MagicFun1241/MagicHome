@@ -3,20 +3,17 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Preference Titles -->
+    <!-- Security Preferences -->
     <string name="security_header">Security</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
 
     <!-- Sync Preferences -->
+    <string name="sync_header">Sync</string>
     <string name="sync_devices_title">Sync devices</string>
     <string name="devices_found">No any devices found</string>
     <string name="dashboard">Dashboard</string>
     <string name="notifications">Notifications</string>
     <string name="menu">Menu</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -36,4 +33,17 @@
     <string name="identification_signin">Sign in</string>
     <string name="identification_signup">Sign up</string>
     <string name="biometric_prompt_title">Biometric prompt</string>
+    <string name="action_profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_test">TestActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

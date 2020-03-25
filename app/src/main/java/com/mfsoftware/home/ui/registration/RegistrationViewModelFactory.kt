@@ -9,7 +9,7 @@ class RegistrationViewModelFactory : ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            RegistationViewModel(RegistrationRepository.getInstance()) as T
+            RegistrationViewModel(RegistrationRepository.getInstance()) as T
         } else {
             throw IllegalArgumentException("Unknown ViewModel class")
         }

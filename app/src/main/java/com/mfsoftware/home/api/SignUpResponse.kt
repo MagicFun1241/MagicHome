@@ -2,7 +2,7 @@ package com.mfsoftware.home.api
 
 import com.google.gson.annotations.SerializedName
 
-class SignInResponse {
+class SignUpResponse {
     @SerializedName("token")
     lateinit var token: String
 

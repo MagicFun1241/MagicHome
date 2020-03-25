@@ -5,5 +5,8 @@ import io.realm.annotations.Required
 
 open class Room : RealmObject() {
     @Required
+    var id: String? = null
+
+    @Required
     var name: String? = null
 }

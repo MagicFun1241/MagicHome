@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.content.SharedPreferences;
-import android.widget.Toast;
+import android.provider.Settings;
 
 import com.mfsoftware.home.api.Api;
 
@@ -17,44 +18,41 @@ import java.util.concurrent.Executor;
 
 public class PreloaderActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
+    private String fingerPrint;
 
+    @SuppressLint("HardwareIds")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preloader);
 
+        fingerPrint = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         preferences = getSharedPreferences("user", MODE_PRIVATE);
 
-        boolean biometricPromptEnabled = getSharedPreferences("com.mfsoftware.home_preferences", MODE_PRIVATE).getBoolean("biometric_prompt", false);
+        boolean biometricPromptEnabled = getSharedPreferences("settings", MODE_PRIVATE).getBoolean("biometric_prompt", false);
 
         if (biometricPromptEnabled) {
+            final byte[] tryCount = {3};
+
             Executor executor = ContextCompat.getMainExecutor(this);
             BiometricPrompt biometricPrompt = new BiometricPrompt(PreloaderActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
-                    Toast.makeText(getApplicationContext(), errString, Toast.LENGTH_SHORT).show();
 
-                    finish();
+                    if (tryCount[0] == 0) finish();
+                    else tryCount[0]--;
                 }
 
                 @Override
                 public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
 
-                    Api.create(); // Инициализируем API
+                    Api.create(getApplicationContext(), fingerPrint); // Инициализируем API
                     Api.token = preferences.getString("token", ""); // Передаем токен
 
                     startActivity(new Intent(PreloaderActivity.this, MainActivity.class));
-
-                    finish();
-                }
-
-                @Override
-                public void onAuthenticationFailed() {
-                    super.onAuthenticationFailed();
-                    Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
 
                     finish();
                 }
@@ -71,7 +69,7 @@ public class PreloaderActivity extends AppCompatActivity {
         else {
             String token = preferences.getString("token", "");
 
-            Api.create(); // Инициализируем API
+            Api.create(getApplicationContext(), fingerPrint); // Инициализируем API
 
             if (token.equals("")) // Если токен не сохранен
                 startActivityForResult(new Intent(this, IdentificationActivity.class), 1);
@@ -101,7 +99,7 @@ public class PreloaderActivity extends AppCompatActivity {
                 ed.putString("token", token);
                 ed.apply();
 
-                Api.create(); // Инициализируем API
+                Api.create(getApplicationContext(), fingerPrint); // Инициализируем API
                 Api.token = token; // И помещаем туда токен
 
                 startActivity(new Intent(this, MainActivity.class));
