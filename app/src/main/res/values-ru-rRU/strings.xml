@@ -17,7 +17,7 @@
     <string name="login_failed">Ошибка входа</string>
     <string name="prompt_password">Пароль</string>
     <string name="welcome">Добро пожаловать домой,</string>
-    <string name="prompt_email">Почта или ник</string>
+    <string name="prompt_email">Эл. Почта</string>
     <string name="category_tv">ТВ</string>
     <string name="category_locks">Замки</string>
     <string name="biometric_confirmation">Биометрическое подтверждение</string>
@@ -29,4 +29,11 @@
     <string name="security_header">Безопастность</string>
     <string name="biometric_prompt_title">Проверка биометрии</string>
     <string name="action_profile">Профиль</string>
+    <string name="prompt_login">Логин</string>
+    <string name="app_title">Дом</string>
+    <string name="prompt_login_or_email">Логин или Почта</string>
+    <string name="prompt_first_name">Имя</string>
+    <string name="prompt_password_repeat">Повторите пароль</string>
+    <string name="prompt_last_name">Фамилия</string>
+    <string name="activity_registration_title">Создание акканта</string>
 </resources>
