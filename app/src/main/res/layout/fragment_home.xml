@@ -1,71 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
     <Toolbar
         android:id="@+id/home_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         android:background="@color/colorPrimary"
-        android:title="@string/app_name">
-    </Toolbar>
+        android:title="@string/app_name"
+        app:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/home_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <FrameLayout
-                android:layout_marginTop="?attr/actionBarSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/welcome_text"
-                    android:layout_marginStart="18dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/welcome"
-                    android:textSize="18sp" />
+                <FrameLayout
+                    android:layout_width="340dp"
+                    android:layout_height="64dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/welcome_first_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:paddingStart="18dp"
-                    android:paddingEnd="0dp"
-                    android:paddingTop="55dp"
-                    android:text="Nikita"/>
+                    <LinearLayout
+                        android:layout_width="340dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/welcome_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginStart="18dp"
+                            android:text="@string/welcome"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/welcome_first_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="18dp"
+                            android:text="Nikita"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+                </FrameLayout>
 
                 <ImageButton
                     android:id="@+id/add_button"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
                     android:layout_gravity="end|center"
-                    android:src="@drawable/ic_add"
+                    android:layout_marginRight="16dp"
                     android:background="@drawable/rounded_corners_7dp"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="TODO"
+                    android:src="@drawable/ic_add" />
             </FrameLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="test"/>
+                    android:text="test" />
             </ScrollView>
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
