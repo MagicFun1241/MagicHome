@@ -22,19 +22,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
         registrationViewModel = new ViewModelProvider(this, new RegistrationViewModelFactory()).get(RegistrationViewModel.class);
 
-        registrationViewModel.getRegistrationFormState().observe(this, new Observer<RegistrationFormState>() {
-            @Override
-            public void onChanged(@Nullable RegistrationFormState registrationFormState) {
-                if (registrationFormState == null) return;
+        registrationViewModel.getRegistrationFormState().observe(this, registrationFormState -> {
+            if (registrationFormState == null) return;
 
-                /*loginButton.setEnabled(loginFormState.isDataValid());
+            /*loginButton.setEnabled(loginFormState.isDataValid());
 
-                if (loginFormState.getUsernameError() != null)
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+            if (loginFormState.getUsernameError() != null)
+                usernameEditText.setError(getString(loginFormState.getUsernameError()));
 
-                if (loginFormState.getPasswordError() != null)
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));*/
-            }
+            if (loginFormState.getPasswordError() != null)
+                passwordEditText.setError(getString(loginFormState.getPasswordError()));*/
         });
     }
 

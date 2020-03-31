@@ -3,5 +3,7 @@
     <color name="colorPrimaryDark">#00554A</color>
     <color name="colorPrimary">#95009688</color>
     <color name="colorAccent">#22AD7C</color>
-    <color name="colorActionBarDark">#2C2C2C</color>
+
+    <color name="colorAccentDark">#187051</color>
+    <color name="colorActionBarDark">#1D1D1D</color>
 </resources>

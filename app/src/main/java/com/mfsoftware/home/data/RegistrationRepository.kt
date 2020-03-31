@@ -20,7 +20,7 @@ class RegistrationRepository {
     }
 
     fun register(username: String, password: String, email: String, firstname: String, secondname: String, callback: Callback<SignUpResponse>) {
-        val call = Api.json.registerUser(SignUpRequest(username, Hash.create(password), email, firstname, secondname))
+        val call = Api.json.registerUser(SignUpRequest(username, Hash.create(password), email, firstname, secondname), Api.getFingerPrint())
         call.enqueue(callback)
     }
 

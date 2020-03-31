@@ -6,18 +6,17 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface JsonApi {
     @POST("user/signin")
-    Call<SignInResponse> signIn(@Body SignInRequest obj);
+    Call<SignInResponse> signIn(@Body SignInRequest body, @Header("Fingerprint") String fingerPrint);
 
     @POST("user/register")
-    Call<SignUpResponse> registerUser(@Body SignUpRequest obj);
+    Call<SignUpResponse> registerUser(@Body SignUpRequest body, @Header("Fingerprint") String fingerPrint);
 
     @GET("devices")
-    Call<GetDevicesResponse> getDevices(@Query("fingerprint") String fingerPrint, @Header("Authorization") String token);
+    Call<GetDevicesResponse> getDevices(@Header("Fingerprint") String fingerPrint, @Header("Authorization") String token);
 
     @GET("device/{id}")
-    Call<SignInResponse> getDevice(@Path("id") String id);
+    Call<SignInResponse> getDevice(@Path("id") String id, @Header("Fingerprint") String fingerPrint, @Header("Authorization") String token);
 }

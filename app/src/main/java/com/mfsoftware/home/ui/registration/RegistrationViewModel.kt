@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.mfsoftware.home.R
 import com.mfsoftware.home.api.SignUpResponse
 import com.mfsoftware.home.data.RegistrationRepository
+import com.mfsoftware.home.security.Validator.Companion.isEmail
 import com.mfsoftware.home.security.Validator.Companion.isLogin
 import com.mfsoftware.home.security.Validator.Companion.isPassword
 import com.mfsoftware.home.ui.login.LoggedInUserView
@@ -41,9 +42,10 @@ class RegistrationViewModel(var registrationRepository: RegistrationRepository?)
         return registrationFormState
     }
 
-    fun registrationDataChanged(username: String?, password: String?) {
-        if (!username?.let { isLogin(it) }!!) registrationFormState.setValue(RegistrationFormState(R.string.invalid_username, null))
-        else if (!isPassword(password!!)) registrationFormState.setValue(RegistrationFormState(null, R.string.invalid_password))
+    fun registrationDataChanged(email: String?, username: String?, password: String?) {
+        if (!email?.let { isEmail(it) }!!) registrationFormState.setValue(RegistrationFormState(R.string.invalid_email, null, null));
+        else if (!username?.let { isLogin(it) }!!) registrationFormState.setValue(RegistrationFormState(null, R.string.invalid_username, null))
+        else if (!isPassword(password!!)) registrationFormState.setValue(RegistrationFormState(null, null, R.string.invalid_password))
         else registrationFormState.setValue(RegistrationFormState(true))
     }
 }

@@ -2,8 +2,6 @@ package com.mfsoftware.home;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,12 +12,10 @@ import com.mfsoftware.home.models.Device;
 import com.mfsoftware.home.models.Room;
 import com.mfsoftware.home.views.OnSwipeTouchListener;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -86,22 +82,19 @@ public class MainActivity extends AppCompatActivity
                 .add(R.id.content_main, menuFragment)
                 .commit();
 
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.navigation_home:
-                        fragmentManager.beginTransaction().replace(R.id.content_main, homeFragment).commit();
-                        return true;
-                    case R.id.navigation_notifications:
-                        fragmentManager.beginTransaction().replace(R.id.content_main, notificationsFragment).commit();
-                        return true;
-                    case R.id.navigation_menu:
-                        fragmentManager.beginTransaction().replace(R.id.content_main, menuFragment).commit();
-                        return true;
-                }
-                return false;
+        bottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.navigation_home:
+                    fragmentManager.beginTransaction().replace(R.id.content_main, homeFragment).commit();
+                    return true;
+                case R.id.navigation_notifications:
+                    fragmentManager.beginTransaction().replace(R.id.content_main, notificationsFragment).commit();
+                    return true;
+                case R.id.navigation_menu:
+                    fragmentManager.beginTransaction().replace(R.id.content_main, menuFragment).commit();
+                    return true;
             }
+            return false;
         });
     }
 

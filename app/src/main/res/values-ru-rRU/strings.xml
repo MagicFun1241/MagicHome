@@ -16,7 +16,7 @@
     <string name="invalid_username">Неверное имя пользователя</string>
     <string name="login_failed">Ошибка входа</string>
     <string name="prompt_password">Пароль</string>
-    <string name="welcome">Добро пожаловать домой,</string>
+    <string name="your_now_at">Вы сейчас на</string>
     <string name="prompt_email">Эл. Почта</string>
     <string name="category_tv">ТВ</string>
     <string name="category_locks">Замки</string>
@@ -36,4 +36,6 @@
     <string name="prompt_password_repeat">Повторите пароль</string>
     <string name="prompt_last_name">Фамилия</string>
     <string name="activity_registration_title">Создание акканта</string>
+    <string name="invalid_email">Неверный адресс электронной почты</string>
+    <string name="default_home_address">ул. Пушкина 205</string>
 </resources>

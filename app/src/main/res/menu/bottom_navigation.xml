@@ -8,12 +8,12 @@
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications"
+        android:icon="@drawable/ic_event"
         android:title="@string/notifications" />
 
     <item
         android:id="@+id/navigation_menu"
-        android:icon="@drawable/ic_menu"
-        android:title="@string/dashboard" />
+        android:icon="@drawable/ic_account_circle"
+        android:title="@string/menu" />
 
 </menu>

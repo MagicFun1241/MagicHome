@@ -47,7 +47,7 @@ public class LoginRepository {
     }
 
     public void login(String username, String password, Callback<SignInResponse> callback) {
-        Call<SignInResponse> call = Api.json.signIn(new SignInRequest(username, Hash.create(password), Api.getFingerPrint()));
+        Call<SignInResponse> call = Api.json.signIn(new SignInRequest(username, Hash.create(password)), Api.getFingerPrint());
         call.enqueue(callback);
     }
 }

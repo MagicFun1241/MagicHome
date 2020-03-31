@@ -19,7 +19,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">Welcome home,</string>
+    <string name="your_now_at">Your now at</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be longer than 8 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -45,8 +45,6 @@
     <string name="next" translatable="false">Next</string>
     <string name="previous" translatable="false">Previous</string>
 
-    <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
-    <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
     <string name="prompt_login">Login</string>
     <string name="app_title">Home</string>
     <string name="prompt_login_or_email">Login or Email</string>
@@ -54,4 +52,6 @@
     <string name="prompt_password_repeat">Repeat Password</string>
     <string name="prompt_last_name">Second Name</string>
     <string name="activity_registration_title">Sign In</string>
+    <string name="invalid_email">Not a valid emal adress</string>
+    <string name="default_home_address">Home</string>
 </resources>

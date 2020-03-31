@@ -5,5 +5,5 @@ import com.mfsoftware.home.models.Device
 
 class GetDevicesResponse {
     @SerializedName("items")
-    private val items: List<Device>? = null
+    lateinit var items: List<Device>
 }

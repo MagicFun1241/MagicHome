@@ -5,10 +5,13 @@ import io.realm.annotations.Required
 
 open class Device : RealmObject() {
     @Required
-    var local_ip: String? = null
+    var id: String? = null
+
+    @Required
+    var localIp: String? = null
 
     @Required
     var type: Int? = null
 
-    var room: Room? = null
+    var room: String? = null
 }

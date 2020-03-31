@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,9 +9,9 @@
         android:id="@+id/home_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorActionBarDark"
         android:title="@string/app_name"
-        app:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+        android:titleTextColor="@android:color/white" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/home_refresh"
@@ -22,6 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="10dp"
             android:orientation="vertical">
 
             <FrameLayout
@@ -37,7 +37,7 @@
 
                     <LinearLayout
                         android:layout_width="340dp"
-                        android:layout_height="48dp"
+                        android:layout_height="55dp"
                         android:layout_gravity="center"
                         android:orientation="vertical">
 
@@ -47,16 +47,17 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
                             android:layout_marginStart="18dp"
-                            android:text="@string/welcome"
+                            android:text="@string/your_now_at"
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/welcome_first_name"
+                            android:id="@+id/home_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="18dp"
-                            android:text="Nikita"
+                            android:text="@string/default_home_address"
+                            android:textStyle="bold"
                             android:textSize="20sp" />
                     </LinearLayout>
                 </FrameLayout>

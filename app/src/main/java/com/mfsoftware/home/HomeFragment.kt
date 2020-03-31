@@ -12,6 +12,7 @@ import com.mfsoftware.home.api.GetDevicesResponse
 import com.mfsoftware.home.data.model.LoggedInUser
 import com.mfsoftware.home.models.Device
 import com.mfsoftware.home.models.Room
+import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -56,6 +57,8 @@ class HomeFragment : Fragment() {
 
         val context = context!!
 
+        val realm = Realm.getDefaultInstance()
+
         add_button.setOnClickListener { startActivity(Intent(context, AddDeviceActivity::class.java)) }
 
         home_refresh.setOnRefreshListener {
@@ -63,28 +66,32 @@ class HomeFragment : Fragment() {
             call?.enqueue(object : Callback<GetDevicesResponse?> {
                 override fun onResponse(call: Call<GetDevicesResponse?>, response: Response<GetDevicesResponse?>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(context, "Ok", Toast.LENGTH_LONG).show()
+                        realm.beginTransaction()
+
+                        response.body()?.items?.forEach {
+                            Toast.makeText(context, it.id, Toast.LENGTH_LONG).show()
+                        }
+
+                        realm.commitTransaction()
                     } else Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+
+                    home_refresh.isRefreshing = false // Останавливаем анимацию
                 }
 
                 override fun onFailure(call: Call<GetDevicesResponse?>, t: Throwable) {
                     Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+
+                    home_refresh.isRefreshing = false
                 }
             })
         }
 
-        welcome_first_name.text = mUser!!.firstName
+        // TODO: Добавить изменяемость для названия дома
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-    fun onButtonPressed(uri: Uri?) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
     }
 
     override fun onAttach(context: Context) {
