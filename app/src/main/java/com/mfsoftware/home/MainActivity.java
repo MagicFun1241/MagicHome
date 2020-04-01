@@ -22,7 +22,7 @@ import android.widget.Toast;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity
-        implements NotificationsFragment.OnFragmentInteractionListener,
+        implements EventsFragment.OnFragmentInteractionListener,
         HomeFragment.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager; // Для управления фрагментами в BottomAppBar
@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView bottomNavigation;
 
     // А вот и сами фрагменты
-    private Fragment notificationsFragment;
     private Fragment homeFragment;
+    private Fragment eventsFragment;
     private Fragment menuFragment;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         Realm realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
 
         // Инициализируем фрагменты для более быстрого доступа в будущем
-        notificationsFragment = NotificationsFragment.newInstance();
+        eventsFragment = EventsFragment.newInstance();
         menuFragment = MenuFragment.newInstance("", "");
 
         if (!Api.isAvailable(this))
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.content_main, homeFragment)
-                .add(R.id.content_main, notificationsFragment)
+                .add(R.id.content_main, eventsFragment)
                 .add(R.id.content_main, menuFragment)
                 .commit();
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
                     fragmentManager.beginTransaction().replace(R.id.content_main, homeFragment).commit();
                     return true;
                 case R.id.navigation_notifications:
-                    fragmentManager.beginTransaction().replace(R.id.content_main, notificationsFragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.content_main, eventsFragment).commit();
                     return true;
                 case R.id.navigation_menu:
                     fragmentManager.beginTransaction().replace(R.id.content_main, menuFragment).commit();

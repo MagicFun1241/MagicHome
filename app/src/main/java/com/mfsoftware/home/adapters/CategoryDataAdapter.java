@@ -16,12 +16,12 @@ import com.mfsoftware.home.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+public class CategoryDataAdapter extends RecyclerView.Adapter<CategoryDataAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
     private List<Category> list;
 
-    public DataAdapter(Context context, ArrayList<Category> list) {
+    public CategoryDataAdapter(Context context, ArrayList<Category> list) {
         this.inflater = LayoutInflater.from(context);
         this.list = list;
     }
@@ -59,7 +59,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         }
 
         void bind(Category category) {
-            categoryPreview.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
             categoryPreview.setImageResource(category.getPreview());
             title.setText(category.getTitle());
         }
