@@ -3,6 +3,7 @@ package com.mfsoftware.home;
 import android.app.Application;
 
 import com.mfsoftware.home.models.MagicMigration;
+import com.vk.api.sdk.VK;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -21,5 +22,7 @@ public class MagicApplication extends Application {
                 .build();
 
         Realm.setDefaultConfiguration(realmConfiguration);
+
+        VK.initialize(this);
     }
 }

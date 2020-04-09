@@ -33,48 +33,44 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:text="@string/prompt_login">
-        </EditText>
+            android:hint="@string/prompt_login"></EditText>
 
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="@string/prompt_email">
-        </EditText>
+            android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"></EditText>
 
         <EditText
             android:id="@+id/first_name"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="@string/prompt_first_name">
-        </EditText>
+            android:hint="@string/prompt_first_name"></EditText>
 
 
         <EditText
             android:id="@+id/last_name"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="@string/prompt_last_name">
-        </EditText>
+            android:hint="@string/prompt_last_name"></EditText>
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="@string/prompt_password">
-        </EditText>
+            android:hint="@string/prompt_password"
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/password_repeat"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="@string/prompt_password_repeat">
-        </EditText>
-
+            android:hint="@string/prompt_password_repeat"
+            android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/loginAction"
+            android:id="@+id/registrationAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

@@ -12,9 +12,14 @@ import android.os.Bundle;
 import android.content.SharedPreferences;
 import android.provider.Settings;
 
+import com.mfsoftware.home.adapters.DevicesTree;
 import com.mfsoftware.home.api.Api;
+import com.mfsoftware.home.models.Device;
+import com.mfsoftware.home.models.Room;
 
 import java.util.concurrent.Executor;
+
+import io.realm.Realm;
 
 public class PreloaderActivity extends AppCompatActivity {
 
@@ -102,7 +107,14 @@ public class PreloaderActivity extends AppCompatActivity {
                 Api.create(getApplicationContext(), fingerPrint); // Инициализируем API
                 Api.token = token; // И помещаем туда токен
 
-                startActivity(new Intent(this, MainActivity.class));
+                Realm realm = Realm.getDefaultInstance();
+                Intent intent = new Intent(this, MainActivity.class);
+
+                if (Api.isAvailable(this)) {
+
+                } else intent.putExtra("devicesTree", DevicesTree.parse(realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll())));
+
+                startActivity(intent);
 
                 finish();
                 break;

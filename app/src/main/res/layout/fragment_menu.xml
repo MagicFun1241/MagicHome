@@ -25,13 +25,15 @@
             android:paddingEnd="10dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/user_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:text="Firstname Secondname"/>
+                android:text="Firstname"/>
 
             <TextView
+                android:id="@+id/user_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
@@ -39,7 +41,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </FrameLayout>

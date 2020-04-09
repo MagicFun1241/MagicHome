@@ -11,6 +11,7 @@ import com.mfsoftware.home.data.model.LoggedInUser;
 import com.mfsoftware.home.models.Device;
 import com.mfsoftware.home.models.Room;
 import com.mfsoftware.home.views.OnSwipeTouchListener;
+import com.vk.api.sdk.utils.VKUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.util.Arrays;
 
 import io.realm.Realm;
 
@@ -58,20 +61,25 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        String[] fingerprints = VKUtils.getCertificateFingerprint(this, this.getPackageName());
+        assert fingerprints != null;
+
+        android.util.Log.d("VK", Arrays.toString(fingerprints));
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
 
         LoggedInUser user = new LoggedInUser(preferences.getString("username", ""), preferences.getString("firstname", ""));
 
-        Realm realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
-
         // Инициализируем фрагменты для более быстрого доступа в будущем
         eventsFragment = EventsFragment.newInstance();
-        menuFragment = MenuFragment.newInstance("", "");
+        menuFragment = MenuFragment.newInstance(user);
 
-        if (!Api.isAvailable(this))
+        if (!Api.isAvailable(this)) {
+            Realm realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
             homeFragment = HomeFragment.newInstance(user, realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll()));
+        }
         else homeFragment = HomeFragment.newInstance(user);
 
         // Доверяем их под руководство менеджера
@@ -87,7 +95,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_home:
                     fragmentManager.beginTransaction().replace(R.id.content_main, homeFragment).commit();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_events:
                     fragmentManager.beginTransaction().replace(R.id.content_main, eventsFragment).commit();
                     return true;
                 case R.id.navigation_menu:

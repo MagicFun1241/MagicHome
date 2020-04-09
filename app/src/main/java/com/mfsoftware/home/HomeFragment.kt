@@ -131,11 +131,30 @@ class HomeFragment : Fragment() {
          */
         @JvmStatic
         fun newInstance(user: LoggedInUser?): HomeFragment {
+            /*
+            * val realm = Realm.getDefaultInstance()
+
+            val call = Api.json.getDevices(Api.getFingerPrint(), Api.getAuthorizationHeader())
+            call?.enqueue(object : Callback<GetDevicesResponse?> {
+                override fun onResponse(call: Call<GetDevicesResponse?>, response: Response<GetDevicesResponse?>) {
+                    if (response.isSuccessful) {
+                        realm.beginTransaction()
+
+                        if (response.body()?.items?.size!! > 0) {
+                            fragment.mDevicesList = response.body()!!.items
+                            realm.insertOrUpdate(response.body()!!.items)
+                        }
+
+                        realm.commitTransaction()
+                    } else Toast.makeText(null, "Error", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onFailure(call: Call<GetDevicesResponse?>, t: Throwable) {
+                    Toast.makeText(null, "Error", Toast.LENGTH_LONG).show()
+                }
+            })*/
             val fragment = HomeFragment()
             fragment.mUser = user
-            // TODO: Получать результаты с сервера
-            //fragment.mDevicesList = devices;
-            //fragment.mRoomsList = rooms;
             return fragment
         }
 

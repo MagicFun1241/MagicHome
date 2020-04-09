@@ -4,6 +4,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

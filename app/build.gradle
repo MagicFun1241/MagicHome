@@ -72,6 +72,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // VK SDK
+    implementation 'com.vk:androidsdk:2.2.0'
 }
 repositories {
     mavenCentral()
