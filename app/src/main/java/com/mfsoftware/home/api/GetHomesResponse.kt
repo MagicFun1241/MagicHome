@@ -1,9 +1,9 @@
 package com.mfsoftware.home.api
 
 import com.google.gson.annotations.SerializedName
-import com.mfsoftware.home.data.Device
+import com.mfsoftware.home.data.Home
 
-class GetDevicesResponse {
+class GetHomesResponse {
     @SerializedName("items")
-    lateinit var items: List<Device>
+    lateinit var items: List<Home>
 }

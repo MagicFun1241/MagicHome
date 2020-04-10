@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.realm.Realm;
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity
 
         String[] fingerprints = VKUtils.getCertificateFingerprint(this, this.getPackageName());
         assert fingerprints != null;
-
         android.util.Log.d("VK", Arrays.toString(fingerprints));
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -76,11 +76,18 @@ public class MainActivity extends AppCompatActivity
         eventsFragment = EventsFragment.newInstance();
         menuFragment = MenuFragment.newInstance(user);
 
+        ArrayList<com.mfsoftware.home.data.Device> devicesList = new ArrayList<>();
+        ArrayList<com.mfsoftware.home.data.Room> roomsList = new ArrayList<>();
+
         if (!Api.isAvailable(this)) {
             Realm realm = Realm.getDefaultInstance(); // Получаем экземпляр для работы с локальной базой данных
-            homeFragment = HomeFragment.newInstance(user, realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll()));
+
+            realm.copyFromRealm(realm.where(Device.class).findAll()).forEach(it -> devicesList.add(new com.mfsoftware.home.data.Device(it.getId(), it.getLocalIp(), it.getType(), it.getRoom())));
+            realm.copyFromRealm(realm.where(Room.class).findAll()).forEach(it -> roomsList.add(new com.mfsoftware.home.data.Room(it.getId(), it.getName())));
         }
-        else homeFragment = HomeFragment.newInstance(user);
+        // TODO: Иначе использовать данные, полученые из PreloaderActivity
+
+        homeFragment = HomeFragment.newInstance(user, devicesList, roomsList);
 
         // Доверяем их под руководство менеджера
         fragmentManager = getSupportFragmentManager();

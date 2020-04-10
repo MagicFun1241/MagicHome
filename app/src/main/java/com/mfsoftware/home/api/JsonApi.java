@@ -19,4 +19,10 @@ public interface JsonApi {
 
     @GET("device/{id}")
     Call<SignInResponse> getDevice(@Path("id") String id, @Header("Fingerprint") String fingerPrint, @Header("Authorization") String token);
+
+    @GET("rooms")
+    Call<GetRoomsResponse> getRooms(@Header("Fingerprint") String fingerPrint, @Header("Authorization") String token);
+
+    @GET("homes")
+    Call<GetHomesResponse> getHomes(@Header("Fingerprint") String fingerPrint, @Header("Authorization") String token);
 }

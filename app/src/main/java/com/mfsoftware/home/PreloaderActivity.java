@@ -12,14 +12,22 @@ import android.os.Bundle;
 import android.content.SharedPreferences;
 import android.provider.Settings;
 
-import com.mfsoftware.home.adapters.DevicesTree;
+import com.mfsoftware.home.adapters.FetchedData;
 import com.mfsoftware.home.api.Api;
+import com.mfsoftware.home.api.GetDevicesResponse;
+import com.mfsoftware.home.api.GetHomesResponse;
+import com.mfsoftware.home.api.GetRoomsResponse;
 import com.mfsoftware.home.models.Device;
+import com.mfsoftware.home.models.Home;
 import com.mfsoftware.home.models.Room;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PreloaderActivity extends AppCompatActivity {
 
@@ -111,12 +119,62 @@ public class PreloaderActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MainActivity.class);
 
                 if (Api.isAvailable(this)) {
+                    Api.json.getHomes(Api.getFingerPrint(), Api.getAuthorizationHeader()).enqueue(new Callback<GetHomesResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<GetHomesResponse> call, @NonNull Response<GetHomesResponse> response) {
+                            if (response.isSuccessful()) {
+                                assert response.body() != null;
 
-                } else intent.putExtra("devicesTree", DevicesTree.parse(realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll())));
+                                List<com.mfsoftware.home.data.Home> homes = response.body().items;
+                                Api.json.getRooms(Api.getFingerPrint(), Api.getAuthorizationHeader()).enqueue(new Callback<GetRoomsResponse>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<GetRoomsResponse> call, @NonNull Response<GetRoomsResponse> response) {
+                                        if (response.isSuccessful()) {
+                                            assert response.body() != null;
 
-                startActivity(intent);
+                                            List<com.mfsoftware.home.data.Room> rooms = response.body().items;
+                                            Api.json.getDevices(Api.getFingerPrint(), Api.getAuthorizationHeader()).enqueue(new Callback<GetDevicesResponse>() {
+                                                @Override
+                                                public void onResponse(@NonNull Call<GetDevicesResponse> call, @NonNull Response<GetDevicesResponse> response) {
+                                                    if (response.isSuccessful()) {
+                                                        assert response.body() != null;
+                                                        List<com.mfsoftware.home.data.Device> devices = response.body().items;
 
-                finish();
+                                                        intent.putExtra("data", FetchedData.parse(devices, rooms, homes));
+                                                        startActivity(intent);
+
+                                                        finish();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(@NonNull Call<GetDevicesResponse> call, @NonNull Throwable t) {
+                                                    finish();
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NonNull Call<GetRoomsResponse> call, @NonNull Throwable t) {
+                                        finish();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<GetHomesResponse> call, @NonNull Throwable t) {
+                            finish();
+                        }
+                    });
+                } else {
+                    intent.putExtra("data", FetchedData.parseRealm(realm.copyFromRealm(realm.where(Device.class).findAll()), realm.copyFromRealm(realm.where(Room.class).findAll()), realm.copyFromRealm(realm.where(Home.class).findAll())));
+                    startActivity(intent);
+
+                    finish();
+                }
+
                 break;
         }
     }

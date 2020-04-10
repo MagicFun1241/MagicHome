@@ -33,7 +33,7 @@ public class EventsFragment extends Fragment {
      *
      * @return A new instance of fragment EventsFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static EventsFragment newInstance() {
         return new EventsFragment();
     }
@@ -50,12 +50,12 @@ public class EventsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_events, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    /*
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,7 +85,6 @@ public class EventsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

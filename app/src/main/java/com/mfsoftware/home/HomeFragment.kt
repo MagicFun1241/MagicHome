@@ -5,13 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mfsoftware.home.api.Api
 import com.mfsoftware.home.api.GetDevicesResponse
+import com.mfsoftware.home.api.GetHomesResponse
+import com.mfsoftware.home.data.Device
+import com.mfsoftware.home.data.Home
+import com.mfsoftware.home.data.Room
 import com.mfsoftware.home.data.model.LoggedInUser
-import com.mfsoftware.home.models.Device
-import com.mfsoftware.home.models.Room
 import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
@@ -31,6 +34,8 @@ class HomeFragment : Fragment() {
     private var mUser: LoggedInUser? = null
     private var mDevicesList: List<Device>? = null
     private var mRoomsList: List<Room>? = null
+
+    private var mHomesList: List<Home>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +67,7 @@ class HomeFragment : Fragment() {
         add_button.setOnClickListener { startActivity(Intent(context, AddDeviceActivity::class.java)) }
 
         home_refresh.setOnRefreshListener {
-            val call = Api.json.getDevices(Api.getFingerPrint(), Api.getAuthorizationHeader())
-            call?.enqueue(object : Callback<GetDevicesResponse?> {
+            Api.json.getDevices(Api.getFingerPrint(), Api.getAuthorizationHeader())?.enqueue(object : Callback<GetDevicesResponse?> {
                 override fun onResponse(call: Call<GetDevicesResponse?>, response: Response<GetDevicesResponse?>) {
                     if (response.isSuccessful) {
                         realm.beginTransaction()
@@ -73,9 +77,30 @@ class HomeFragment : Fragment() {
                         }
 
                         realm.commitTransaction()
-                    } else Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
 
-                    home_refresh.isRefreshing = false // Останавливаем анимацию
+                        Api.json.getHomes(Api.getFingerPrint(), Api.getAuthorizationHeader())?.enqueue(object : Callback<GetHomesResponse?> {
+                            override fun onResponse(call: Call<GetHomesResponse?>, response: Response<GetHomesResponse?>) {
+                                if (response.isSuccessful) {
+                                    realm.beginTransaction()
+
+                                    mHomesList = response.body()?.items
+
+                                    realm.commitTransaction()
+                                } else Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+
+                                home_refresh.isRefreshing = false // Останавливаем анимацию
+                            }
+
+                            override fun onFailure(call: Call<GetHomesResponse?>, t: Throwable) {
+                                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+
+                                home_refresh.isRefreshing = false
+                            }
+                        })
+                    } else {
+                        Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+                        home_refresh.isRefreshing = false
+                    }
                 }
 
                 override fun onFailure(call: Call<GetDevicesResponse?>, t: Throwable) {
@@ -86,7 +111,15 @@ class HomeFragment : Fragment() {
             })
         }
 
-        // TODO: Добавить изменяемость для названия дома
+        home_address.setOnClickListener { v ->
+            val popup = PopupMenu(context, v)
+
+            mHomesList?.forEach {
+                popup.menu.add(it.address)
+            }
+
+            popup.show()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -118,7 +151,6 @@ class HomeFragment : Fragment() {
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri?)
     }
 
@@ -129,35 +161,6 @@ class HomeFragment : Fragment() {
          *
          * @return A new instance of fragment HomeFragment.
          */
-        @JvmStatic
-        fun newInstance(user: LoggedInUser?): HomeFragment {
-            /*
-            * val realm = Realm.getDefaultInstance()
-
-            val call = Api.json.getDevices(Api.getFingerPrint(), Api.getAuthorizationHeader())
-            call?.enqueue(object : Callback<GetDevicesResponse?> {
-                override fun onResponse(call: Call<GetDevicesResponse?>, response: Response<GetDevicesResponse?>) {
-                    if (response.isSuccessful) {
-                        realm.beginTransaction()
-
-                        if (response.body()?.items?.size!! > 0) {
-                            fragment.mDevicesList = response.body()!!.items
-                            realm.insertOrUpdate(response.body()!!.items)
-                        }
-
-                        realm.commitTransaction()
-                    } else Toast.makeText(null, "Error", Toast.LENGTH_LONG).show()
-                }
-
-                override fun onFailure(call: Call<GetDevicesResponse?>, t: Throwable) {
-                    Toast.makeText(null, "Error", Toast.LENGTH_LONG).show()
-                }
-            })*/
-            val fragment = HomeFragment()
-            fragment.mUser = user
-            return fragment
-        }
-
         @JvmStatic
         fun newInstance(user: LoggedInUser, devices: MutableList<Device>, rooms: MutableList<Room>): Fragment {
             val fragment = HomeFragment()
