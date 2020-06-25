@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "34742145008",
+    "firebase_url": "https://magic-home-268704.firebaseio.com",
+    "project_id": "magic-home-268704",
+    "storage_bucket": "magic-home-268704.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34742145008:android:fe7d62417b5ee82f339735",
+        "android_client_info": {
+          "package_name": "com.mfsoftware.home"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34742145008-g57lb0tlvhq6ecrajig5uf6om39m3gjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYKnONtuJaUl9AoYs5PX-2Ob3uMhzITHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34742145008-g57lb0tlvhq6ecrajig5uf6om39m3gjk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
